@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/jvesche20/WebHW4/issues"
   },
-  "homepage": "https://github.com/jvesche20/WebHW4#readme"
+  "homepage": "https://github.com/jvesche20/WebHW4#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
