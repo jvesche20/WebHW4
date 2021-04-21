@@ -17,7 +17,8 @@
   },
   "homepage": "https://github.com/jvesche20/WebHW4#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "socket.io": "^4.0.1"
   },
   "devDependencies": {
     "eslint": "^7.24.0",
