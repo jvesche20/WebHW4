@@ -24,10 +24,10 @@ exports.postUser = async (request, response) => {
 
 exports.putUsers = async (request, response) => {
   const { sku } = request.params;
-  const product = request.body;
-  product.sku = sku;
+  const user = request.body;
+  user.sku = sku;
   await doActionFail.doActionFail(request, response, async () => {
-    await Users.findOneAndReplace({ sku }, product, {
+    await Users.findOneAndReplace({ sku }, user, {
       upsert: true,
     });
     response.sendStatus(StatusCodes.OK);
@@ -36,11 +36,11 @@ exports.putUsers = async (request, response) => {
 
 exports.userPatch = async (request, response) => {
   const { sku } = request.params;
-  const product = request.body;
-  delete product.sku;
+  const user = request.body;
+  delete user.sku;
   await doActionFail.doActionFail(request, response, async () => {
-    const patchRequest = await product
-      .findOneAndUpdate({ sku }, product, {
+    const patchRequest = await user
+      .findOneAndUpdate({ sku }, user, {
         new: true,
       })
       .select('-_id -__v');
