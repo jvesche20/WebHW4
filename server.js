@@ -11,7 +11,14 @@ app.get('/', (req, res) => {
   res.sendFile(`${__dirname}/html/index.html`);
 });
 
+io.on('connection', (socket) => {
+  socket.on('chat message', (msg) => {
+    io.emit('chat message', msg);
+  });
+});
+
 app.use(BodyParser.json());
+
 app.post('/users', postUsers.postUser);
 (async () => {
   await Mongoose.connect('mongodb+srv://admin:admin@cluster0.cgc8h.mongodb.net/Cluster0?retryWrites=true&w=majority', {
