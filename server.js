@@ -5,6 +5,18 @@ const BodyParser = require('body-parser');
 const Mongoose = require('mongoose');
 
 const port = process.env.PORT || 8000;
+const doActionThatMightFailValidation = async (request, response, action) => {
+  try {
+    await action();
+  } catch (e) {
+    response.sendStatus(
+      e.code === 11000
+      || e.stack.includes('ValidationError')
+      || (e.reason !== undefined && e.reason.code === 'ERR_ASSERTION')
+        ? 400 : 500,
+    );
+  }
+};
 
 app.get('/', (req, res) => {
   res.sendFile(`${__dirname}/html/index.html`);
@@ -12,6 +24,15 @@ app.get('/', (req, res) => {
 
 app.use(BodyParser.json());
 
-http.listen(port, () => {
-  console.log(`running with port:${port}/`);
-});
+(async () => {
+  await Mongoose.connect('mongodb+srv://admin:admin@cluster0.cgc8h.mongodb.net/Cluster0?retryWrites=true&w=majority', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true,
+  });
+
+  http.listen(port, () => {
+    console.log(`running with port:${port}/`);
+  });
+})();
