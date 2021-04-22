@@ -5,13 +5,14 @@ const BodyParser = require('body-parser');
 const Mongoose = require('mongoose');
 
 const port = process.env.PORT || 8000;
+const postUsers = require('./controller/controller');
 
 app.get('/', (req, res) => {
   res.sendFile(`${__dirname}/html/index.html`);
 });
 
 app.use(BodyParser.json());
-
+app.post('/users', postUsers.postUser);
 (async () => {
   await Mongoose.connect('mongodb+srv://admin:admin@cluster0.cgc8h.mongodb.net/Cluster0?retryWrites=true&w=majority', {
     useNewUrlParser: true,
@@ -24,3 +25,6 @@ app.use(BodyParser.json());
     console.log(`running with port:${port}/`);
   });
 })();
+
+// db.User.find({User: /<What they input>/}).forEach(printjson)
+// $regex: ?????
