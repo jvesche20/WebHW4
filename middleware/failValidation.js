@@ -1,3 +1,5 @@
+const StatusCodes = require('http-status-codes');
+
 exports.doActionFail = async (request, response, action) => {
   try {
     await action();
@@ -6,7 +8,7 @@ exports.doActionFail = async (request, response, action) => {
       e.code === 11000
       || e.stack.includes('ValidationError')
       || (e.reason !== undefined && e.reason.code === 'ERR_ASSERTION')
-        ? 400 : 500,
+        ? StatusCodes.BAD_REQUEST : StatusCodes.INTERNAL_SERVER_ERROR,
     );
   }
 };

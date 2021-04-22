@@ -5,18 +5,6 @@ const BodyParser = require('body-parser');
 const Mongoose = require('mongoose');
 
 const port = process.env.PORT || 8000;
-const doActionThatMightFailValidation = async (request, response, action) => {
-  try {
-    await action();
-  } catch (e) {
-    response.sendStatus(
-      e.code === 11000
-      || e.stack.includes('ValidationError')
-      || (e.reason !== undefined && e.reason.code === 'ERR_ASSERTION')
-        ? 400 : 500,
-    );
-  }
-};
 
 app.get('/', (req, res) => {
   res.sendFile(`${__dirname}/html/index.html`);
