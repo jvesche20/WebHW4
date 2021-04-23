@@ -26,6 +26,13 @@ io.on('connection', (socket) => {
     new Name({ name: msg }).save();
   });
 });
+
+io.on('connection', (socket) => {
+  socket.on('auto complete', (msg) => {
+    io.emit('auto complete', msg);
+  });
+});
+
 // create another io.on('connection'
 // print db.user.find({ User: /<What they input>/ }).forEach(printjson);
 // then ur done
