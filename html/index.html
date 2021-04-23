@@ -15,31 +15,28 @@
             <script src="/socket.io/socket.io.js"></script>
         <script>
           function myFunction() {
-            const socket = io();
-            const input = document.getElementById('input');
 
-            form.addEventListener('keydown', function(e) {
-              e.preventDefault();
-              if (input.value) {
-                socket.emit('auto complete', input.value);
-                input.value = '';
-              }
-            });
+
           };
         </script>
         <script>
-
-          // Java script code where it will react to how the user is using the code
           const socket = io();
 
           const messages = document.getElementById('messages');
           const form = document.getElementById('form');
           const input = document.getElementById('input');
-
-          form.addEventListener('submit', function(e) { // change submit to keypress
+          form.addEventListener('keydown', function(e) {
             e.preventDefault();
             if (input.value) {
-              socket.emit('chat message', input.value); // remove 'chat message' to something such as auto complete
+              socket.emit('auto complete', input.value);
+              input.value = '';
+            }
+          });
+
+          form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (input.value) {
+              socket.emit('chat message', input.value);
               input.value = '';
             }
           });
