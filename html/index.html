@@ -25,7 +25,7 @@
           form.addEventListener('submit', function(e) { // change sumbit to keypress
             e.preventDefault();
             if (input.value) {
-              socket.emit('chat message', input.value); // remove 'chat message' to somehting such as auto complete
+              socket.emit('chat message', input.value); // remove 'chat message' to something such as auto complete
               input.value = '';
             }
           });
@@ -34,7 +34,6 @@
             const item = document.createElement('li');
             item.textContent = msg;
             messages.appendChild(item);
-            window.scrollTo(0, document.body.scrollHeight);
           });
         </script>
     </body>

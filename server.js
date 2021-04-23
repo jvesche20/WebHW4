@@ -4,20 +4,28 @@ const io = require('socket.io')(http);
 const BodyParser = require('body-parser');
 const Mongoose = require('mongoose');
 
+const Name = require('./database/user');
+
 const port = process.env.PORT || 8000;
 const postUsers = require('./controller/controller');
+const tryAction = require('./middleware/failValidation');
 
+// const findUser = Name.find({ name: /asd/ });
+
+const db = Mongoose.connection;
+
+app.use(BodyParser.json());
+
+// db.user.find({ User: /<What they input>/ }).forEach(printjson);
 app.get('/', (req, res) => {
   res.sendFile(`${__dirname}/html/index.html`);
 });
 
 io.on('connection', (socket) => {
   socket.on('chat message', (msg) => {
-    io.emit('chat message', msg);
+    new Name({ name: msg }).save();
   });
 });
-
-app.use(BodyParser.json());
 
 app.post('/users', postUsers.postUser);
 (async () => {
@@ -32,6 +40,3 @@ app.post('/users', postUsers.postUser);
     console.log(`running with port:${port}/`);
   });
 })();
-
-// db.User.find({User: /<What they input>/}).forEach(printjson)
-// $regex: ?????
