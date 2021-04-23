@@ -10,9 +10,23 @@
         <ul id="messages"></ul>
         <form id="form" action="">
             Name:
-            <input id="input" autocomplete="off"/><button>Send</button>
+            <input type="text" id="input" onkeydown="myFunction()" autocomplete="off"/><button>Send</button>
         </form>
             <script src="/socket.io/socket.io.js"></script>
+        <script>
+          function myFunction() {
+            const socket = io();
+            const input = document.getElementById('input');
+
+            form.addEventListener('keydown', function(e) {
+              e.preventDefault();
+              if (input.value) {
+                socket.emit('auto complete', input.value);
+                input.value = '';
+              }
+            });
+          };
+        </script>
         <script>
 
           // Java script code where it will react to how the user is using the code
@@ -22,7 +36,7 @@
           const form = document.getElementById('form');
           const input = document.getElementById('input');
 
-          form.addEventListener('submit', function(e) { // change sumbit to keypress
+          form.addEventListener('submit', function(e) { // change submit to keypress
             e.preventDefault();
             if (input.value) {
               socket.emit('chat message', input.value); // remove 'chat message' to something such as auto complete
@@ -36,5 +50,6 @@
             messages.appendChild(item);
           });
         </script>
+
     </body>
 </html>

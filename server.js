@@ -26,7 +26,9 @@ io.on('connection', (socket) => {
     new Name({ name: msg }).save();
   });
 });
-
+// create another io.on('connection'
+// print db.user.find({ User: /<What they input>/ }).forEach(printjson);
+// then ur done
 (async () => {
   await Mongoose.connect('mongodb+srv://admin:admin@cluster0.cgc8h.mongodb.net/Cluster0?retryWrites=true&w=majority', {
     useNewUrlParser: true,
