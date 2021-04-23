@@ -27,7 +27,6 @@ io.on('connection', (socket) => {
   });
 });
 
-app.post('/users', postUsers.postUser);
 (async () => {
   await Mongoose.connect('mongodb+srv://admin:admin@cluster0.cgc8h.mongodb.net/Cluster0?retryWrites=true&w=majority', {
     useNewUrlParser: true,
