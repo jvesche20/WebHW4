@@ -5,18 +5,15 @@ const BodyParser = require('body-parser');
 const Mongoose = require('mongoose');
 
 const Name = require('./database/user');
+const doActionFail = require('./middleware/failValidation');
 
 const port = process.env.PORT || 8000;
-const postUsers = require('./controller/controller');
-const tryAction = require('./middleware/failValidation');
 
 // const findUser = Name.find({ name: /asd/ });
 
-const db = Mongoose.connection;
-
+app.use(BodyParser.urlencoded({ extended: true }));
 app.use(BodyParser.json());
 
-// db.user.find({ User: /<What they input>/ }).forEach(printjson);
 app.get('/', (req, res) => {
   res.sendFile(`${__dirname}/html/index.html`);
 });
@@ -24,6 +21,16 @@ app.get('/', (req, res) => {
 io.on('connection', (socket) => {
   socket.on('chat message', (msg) => {
     new Name({ name: msg }).save();
+  });
+});
+async function f1() {
+  const test = await Name.find({ name: /^Jacob/ }).select('-_id -__v');
+  console.log(test);
+}
+
+io.on('connection', (socket) => {
+  socket.on('auto complete', (msg) => {
+    f1();
   });
 });
 
