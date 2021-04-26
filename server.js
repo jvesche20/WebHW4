@@ -3,7 +3,6 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const BodyParser = require('body-parser');
 const Mongoose = require('mongoose');
-
 const Name = require('./database/user');
 
 const port = process.env.PORT || 8000;
@@ -25,20 +24,14 @@ async function f1(query) {
   const arrayOfStrings = test.map((entry) => entry.name);
   return arrayOfStrings;
 }
-
 io.on('connection', (socket) => {
   socket.on('auto complete', (msg) => {
     const test = f1(msg);
-    // console.log(test);
     test.then((result) => {
       result.sort();
-
       const uniqueChars = result.filter((c, index) => result.indexOf(c) === index);
-      console.log(uniqueChars);
       for (let i = 0; i < uniqueChars.length; i += 1) {
-        if (!(uniqueChars[i] === '')) {
-          io.emit('auto complete', uniqueChars[i]);
-        }
+        io.emit('auto complete', uniqueChars[i]);
       }
     });
   });
