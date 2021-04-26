@@ -27,7 +27,6 @@
 
           function myFunction() {
             socket.emit('auto complete', input.value);
-
           };
 
 
@@ -40,9 +39,11 @@
           });
 
           socket.on('auto complete', function(msg) {
+
             const item = document.createElement('li');
             item.textContent = msg;
             messages.appendChild(item);
+
           });
         </script>
 

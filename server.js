@@ -23,20 +23,29 @@ io.on('connection', (socket) => {
     new Name({ name: msg }).save();
   });
 });
-async function f1() {
-  const test = await Name.find({ name: /^Jacob/ }).select('-_id -__v');
-  console.log(test);
+async function f1(query) {
+  const test = await Name.find({ name: { $regex: `^${query}` } }).select('-_id -__v');
+  const arrayOfStrings = test.map((entry) => entry.name);
+
+  console.log(arrayOfStrings[0]);
+  return arrayOfStrings;
 }
 
 io.on('connection', (socket) => {
   socket.on('auto complete', (msg) => {
-    f1();
-  });
-});
+    const test = f1(msg);
+    // console.log(test);
+    test.then((result) => {
+      result.sort();
 
-io.on('connection', (socket) => {
-  socket.on('auto complete', (msg) => {
-    io.emit('auto complete', msg);
+      const uniqueChars = result.filter((c, index) => result.indexOf(c) === index);
+      console.log(uniqueChars);
+      for (let i = 0; i < uniqueChars.length; i += 1) {
+        io.emit('auto complete', uniqueChars[i]);
+      }
+    });
+    // console.log(test);
+    // io.emit('auto complete', msg);
   });
 });
 
