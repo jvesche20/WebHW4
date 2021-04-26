@@ -26,7 +26,9 @@
           form.addEventListener('keyup', myFunction);
 
           function myFunction() {
+            messages.innerHTML = '';
             socket.emit('auto complete', input.value);
+
           };
 
 

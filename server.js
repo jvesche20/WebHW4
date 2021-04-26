@@ -5,11 +5,8 @@ const BodyParser = require('body-parser');
 const Mongoose = require('mongoose');
 
 const Name = require('./database/user');
-const doActionFail = require('./middleware/failValidation');
 
 const port = process.env.PORT || 8000;
-
-// const findUser = Name.find({ name: /asd/ });
 
 app.use(BodyParser.urlencoded({ extended: true }));
 app.use(BodyParser.json());
@@ -26,8 +23,6 @@ io.on('connection', (socket) => {
 async function f1(query) {
   const test = await Name.find({ name: { $regex: `^${query}` } }).select('-_id -__v');
   const arrayOfStrings = test.map((entry) => entry.name);
-
-  console.log(arrayOfStrings[0]);
   return arrayOfStrings;
 }
 
@@ -41,17 +36,14 @@ io.on('connection', (socket) => {
       const uniqueChars = result.filter((c, index) => result.indexOf(c) === index);
       console.log(uniqueChars);
       for (let i = 0; i < uniqueChars.length; i += 1) {
-        io.emit('auto complete', uniqueChars[i]);
+        if (!(uniqueChars[i] === '')) {
+          io.emit('auto complete', uniqueChars[i]);
+        }
       }
     });
-    // console.log(test);
-    // io.emit('auto complete', msg);
   });
 });
 
-// create another io.on('connection'
-// print db.user.find({ User: /<What they input>/ }).forEach(printjson);
-// then ur done
 (async () => {
   await Mongoose.connect('mongodb+srv://admin:admin@cluster0.cgc8h.mongodb.net/Cluster0?retryWrites=true&w=majority', {
     useNewUrlParser: true,
