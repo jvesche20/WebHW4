@@ -4,8 +4,11 @@ const io = require('socket.io')(http);
 const BodyParser = require('body-parser');
 const Mongoose = require('mongoose');
 const Name = require('./database/user');
+require('dotenv').config();
 
 const port = process.env.PORT || 8000;
+
+const url = process.env.URL;
 
 app.use(BodyParser.urlencoded({ extended: true }));
 app.use(BodyParser.json());
@@ -38,13 +41,12 @@ io.on('connection', (socket) => {
 });
 
 (async () => {
-  await Mongoose.connect('mongodb+srv://admin:admin@cluster0.cgc8h.mongodb.net/Cluster0?retryWrites=true&w=majority', {
+  await Mongoose.connect(url, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
     useCreateIndex: true,
   });
-
   http.listen(port, () => {
     console.log(`running with port:${port}/`);
   });
