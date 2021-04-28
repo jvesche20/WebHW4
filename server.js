@@ -4,6 +4,7 @@ const io = require('socket.io')(http);
 const BodyParser = require('body-parser');
 const Mongoose = require('mongoose');
 const Name = require('./database/user');
+const findName = require('./database/find');
 require('dotenv').config();
 
 const port = process.env.PORT;
@@ -21,18 +22,10 @@ io.on('connection', (socket) => {
     new Name({ name: msg }).save();
   });
 });
-async function f1(query) {
-  console.log(query);
-  if (query === '') {
-    return [];
-  }
-  const test = await Name.find({ name: { $regex: `^${query}` } }).select('-_id -__v');
-  const arrayOfStrings = test.map((entry) => entry.name);
-  return arrayOfStrings;
-}
+
 io.on('connection', (socket) => {
   socket.on('auto complete', (msg) => {
-    const test = f1(msg);
+    const test = findName(msg);
     test.then((result) => {
       result.sort();
       const uniqueChars = result.filter((c, index) => result.indexOf(c) === index);
