@@ -6,8 +6,7 @@ const Mongoose = require('mongoose');
 const Name = require('./database/user');
 require('dotenv').config();
 
-const port = process.env.PORT || 8000;
-
+const port = process.env.PORT;
 const url = process.env.URL;
 
 app.use(BodyParser.urlencoded({ extended: true }));
