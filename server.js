@@ -22,11 +22,10 @@ io.on('connection', (socket) => {
     new Name({ name: msg }).save();
   });
 });
-
 io.on('connection', (socket) => {
   socket.on('auto complete', (msg) => {
-    const test = findName(msg);
-    test.then((result) => {
+    const nameFound = findName(msg);
+    nameFound.then((result) => {
       result.sort();
       const uniqueChars = result.filter((c, index) => result.indexOf(c) === index);
       for (let i = 0; i < uniqueChars.length; i += 1) {
@@ -35,7 +34,6 @@ io.on('connection', (socket) => {
     });
   });
 });
-
 (async () => {
   await Mongoose.connect(url, {
     useNewUrlParser: true,
